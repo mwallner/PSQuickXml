@@ -50,7 +50,7 @@ Describe 'Read-QuickXml.ps1' {
 				$_.Attributes.id | Should -Match '\d'
 				$_.xml | Should -Not -BeNullOrEmpty
 				# The xml property should be an array of XmlNode(s) with InnerText
-				($_.xml | ForEach-Object { $_.InnerText }) | Should -Not -BeNullOrEmpty
+				($_.xml) | Should -Not -BeNullOrEmpty
 			}
 		}
 		It 'Does not process text nodes when WantedNodes is set' {

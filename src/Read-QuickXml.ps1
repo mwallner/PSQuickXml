@@ -1,3 +1,4 @@
+#Requires -Version 7.4
 <#
 .SYNOPSIS
     Reads an XML file and processes nodes using a user-supplied script block.
@@ -90,11 +91,8 @@ try {
 					if ($WantedNodes -and $WantedNodes -contains $reader.Name) {
 						$xmlNode = Read-SubtreeXml $reader
 						# Only include the children of the node, not the node itself
-						$children = @()
-						foreach ($child in $xmlNode.DocumentElement.ChildNodes) {
-							$children += $child
-						}
-						$nodeHash['xml'] = $children
+						# convert to [hashtable] for easier access
+						$nodeHash['xml'] = [Newtonsoft.Json.JsonConvert]::SerializeXmlNode($xmlNode.DocumentElement, 'indent') | ConvertFrom-Json -AsHashtable
 					}
 					& $OnNode $nodeHash
 				}
